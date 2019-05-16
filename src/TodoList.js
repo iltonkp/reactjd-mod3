@@ -1,11 +1,27 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const TodoList = () => (
+import { connect } from 'react-redux';
+
+const TodoList = ({ todos }) => (
   <ul>
-    <li>Fazer Café</li>
-    <li>Estudar React</li>
-    <li>Entrar na Comunidade</li>
+    {todos.map(todo => (
+      <li key={todo.id}>{todo.text}</li>
+    ))}
   </ul>
 );
 
-export default TodoList;
+TodoList.propTypes = {
+  todos: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      text: PropTypes.string,
+    }),
+  ).isRequired,
+};
+
+const mapStateToProps = state => ({
+  todos: state.todos,
+});
+
+export default connect(mapStateToProps)(TodoList);
